@@ -76,14 +76,14 @@ public class Dijkstra {
 	}
 
 	public Paths getResult() {
-		System.out.println("----- C ------");
-		System.out.println(c);
-		
-		System.out.println("----- D ------");
-		System.out.println(d);
-		
-		System.out.println("----- P ------");
-		System.out.println(p);
+//		System.out.println("----- C ------");
+//		System.out.println(c);
+//		
+//		System.out.println("----- D ------");
+//		System.out.println(d);
+//		
+//		System.out.println("----- P ------");
+//		System.out.println(p);
 		
 		Int2ObjectMap<Path> nodeToPath = new Int2ObjectOpenHashMap<>();
 		for( int v : g.getNodeSet() ) {
@@ -91,8 +91,8 @@ public class Dijkstra {
 				nodeToPath.put(v, buildPath(v));
 			}
 		}
-		for(Path p : nodeToPath.values())
-			System.out.println(p);
+//		for(Path p : nodeToPath.values())
+//			System.out.println(p);
 		return new Paths(src, nodeToPath);
 	}
 	
