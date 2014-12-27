@@ -34,6 +34,10 @@ public class Dijkstra {
 		}
 	}
 	
+	/**
+	 * Compute all paths from node src to every other node in the given graph
+	 * @param src
+	 */
 	public void execute(int src) {
 		this.src = src;
 		this.d = new IntOpenHashSet();
@@ -75,6 +79,10 @@ public class Dijkstra {
 		return minV;
 	}
 
+	/**
+	 * Returns a Paths object, representing the result
+	 * @return
+	 */
 	public Paths getResult() {
 //		System.out.println("----- C ------");
 //		System.out.println(c);
