@@ -8,14 +8,11 @@ import java.time.Clock;
 import measures.Modularity;
 import measures.WeightedModularity;
 import persistence.GraphReader;
-
 import communitydetection.PLP;
+import dijkstra.Dijkstra;
 
 public class Main {
 	public static void main(String[] args) {
-//		String fname = "data/callfreq.csv";
-//		IGraph g = GraphReader.readGraph(fname, ",", true, true);
-		
 		String fname = "data/dblp.txt";
 		IGraph g = GraphReader.readGraph(fname, "\t", false, false);
 		
@@ -34,10 +31,22 @@ public class Main {
 
 //		nodeToCommunity.keySet().forEach(k -> System.out.println(k+" -> "+nodeToCommunity.get(k)));
 		
-//		System.out.println(nodeToCommunity);
 //		Modularity m = new Modularity(g, nodeToCommunity);
-		Modularity m = new WeightedModularity(g, nodeToCommunity);
-		m.execute();
-		System.out.println(m.getValue());
+//		m.execute();
+//		System.out.println(m.getValue());
+		
+		Modularity wm = new WeightedModularity(g, nodeToCommunity);
+		wm.execute();
+		System.out.println("Modularity: "+wm.getValue());
+		
+		start = clock.millis();
+		Dijkstra dijkstra = new Dijkstra(g);
+		for(int src : g.getEdgeSet())
+			dijkstra.execute(src);
+//		g.getEdgeSet().parallelStream().forEach(src -> dijkstra.execute(src));
+		end = clock.millis();
+		System.out.println("Dijkstra in "+(end - start) / 1000.0+" s");
+		
+		
 	}
 }

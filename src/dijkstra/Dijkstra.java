@@ -69,11 +69,12 @@ public class Dijkstra {
 	
 	private int getMin(final IntSet d, final Int2FloatMap c) {
 		int minV = -1;
-		float minDist = Float.POSITIVE_INFINITY;
+		float minDist = Float.POSITIVE_INFINITY, w;
 		for( int v : d ) {
-			if( c.get(v) <= minDist ) {
+			w = c.get(v);
+			if( w <= minDist ) {
 				minV = v;
-				minDist = c.get(v);
+				minDist = w;
 			}
 		}
 		return minV;
