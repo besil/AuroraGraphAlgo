@@ -1,4 +1,3 @@
-/data/
-/data/*
-/target/
-/bin/
+data/
+target/
+bin
