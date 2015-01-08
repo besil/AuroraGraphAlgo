@@ -1,6 +1,7 @@
 package communitydetection;
 
 import graph.IGraph;
+import graphcomputer.VertexFunction;
 import it.unimi.dsi.fastutil.ints.Int2FloatMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;

@@ -1,15 +1,17 @@
 package graphcomputer;
 
 import graph.IGraph;
+import it.unimi.dsi.fastutil.ints.Int2DoubleMap;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 import java.util.concurrent.ForkJoinPool;
 
-import communitydetection.VertexFunction;
+import centrality.PageRank;
+
+import communitydetection.LP;
 
 public class GraphComputer {
 	protected final ForkJoinPool pool;
-	protected VertexFunction vertexFunction = null;
 	
 	public GraphComputer() {
 		this( Runtime.getRuntime().availableProcessors() );
@@ -19,26 +21,19 @@ public class GraphComputer {
 		this.pool 	= new ForkJoinPool(nthreads);
 	}
 	
-	public void execute(final IGraph graph) {
-		this.execute(graph, 20);
-	}
-	
 	/**
 	 * Execute algorithm 
 	 * @param graph
 	 * @param iterations
 	 */
-	public void execute(final IGraph graph, int iterations) {
-		if(vertexFunction == null) {
-			throw new VertexFunctionNotFound();
-		}
+	public void execute(final VertexFunction vertexFunction, final IGraph graph, int iterations) {
 		
 		for(int it=0; it<iterations; it++) {
 			try {
 				pool.submit( () -> {
 					graph.getNodeSet().parallelStream()
 						.forEach( node ->
-							this.vertexFunction.apply(graph, node)
+							vertexFunction.apply(graph, node)
 						);
 				} ).get();
 			} catch(Exception e) {
@@ -47,20 +42,15 @@ public class GraphComputer {
 		}
 	}
 	
-	public Int2IntMap getResult() {
-		return this.vertexFunction.getResult();
-	}
-	
 	public void dismiss() {
 		this.pool.shutdown();
 	}
 	
-	public VertexFunction getVertexFunction() {
-		return vertexFunction;
+	public Int2IntMap getResult(LP lp) {
+		return lp.getResult();
 	}
 	
-	public void setVertexFunction(VertexFunction vertexFunction) {
-		this.vertexFunction = vertexFunction;
+	public Int2DoubleMap getResult(PageRank pg) {
+		return pg.getResult();
 	}
-	
 }

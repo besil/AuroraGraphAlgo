@@ -40,13 +40,13 @@ public class Main {
 		Clock clock = Clock.systemDefaultZone();
 		GraphComputer computer = new GraphComputer();
 
-		computer.setVertexFunction(new LP(g));
+		LP lp = new LP(g);
 		long start = clock.millis();
-		computer.execute(g, 20);
+		computer.execute(lp, g, 20);
 		long end = clock.millis();
 		System.out.println("PLP in "+(end - start) / 1000.0+" s");
 		computer.dismiss();
-		Int2IntMap nodeToCommunity = computer.getResult();
+		Int2IntMap nodeToCommunity = computer.getResult(lp);
 
 		Modularity wm = new WeightedModularity(g, nodeToCommunity);
 		wm.execute();
