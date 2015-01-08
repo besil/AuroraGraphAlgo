@@ -6,8 +6,8 @@ import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 import java.util.concurrent.ForkJoinPool;
 
+import centrality.ConnectedComponents;
 import centrality.PageRank;
-
 import communitydetection.LP;
 
 public class GraphComputer {
@@ -52,5 +52,9 @@ public class GraphComputer {
 	
 	public Int2DoubleMap getResult(PageRank pg) {
 		return pg.getResult();
+	}
+
+	public Int2IntMap getResult(ConnectedComponents cc) {
+		return cc.getResult();
 	}
 }
