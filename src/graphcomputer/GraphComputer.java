@@ -12,7 +12,11 @@ public class GraphComputer {
 	protected VertexFunction vertexFunction = null;
 	
 	public GraphComputer() {
-		this.pool	= new ForkJoinPool(Runtime.getRuntime().availableProcessors());
+		this( Runtime.getRuntime().availableProcessors() );
+	}
+	
+	public GraphComputer(int nthreads) {
+		this.pool 	= new ForkJoinPool(nthreads);
 	}
 	
 	public void execute(final IGraph graph) {
