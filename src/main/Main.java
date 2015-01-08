@@ -33,8 +33,8 @@ public class Main {
 //		g = GraphReader.readGraph(fname, " ", false, false);
 		
 //		oldplp(g);
-//		plp(g);
-		pagerank(g);
+		plp(g);
+//		pagerank(g);
 //		connectedComponents(g);
 		
 //		dijkstra(g);
