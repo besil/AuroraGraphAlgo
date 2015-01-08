@@ -9,6 +9,7 @@ Parallel Graph algorithms (Pregel like implementation)
 <ul>
 	<li>PageRank</li>
 	<li>Label Propagation (Community Detection)</li>
+	<li>Connected Components</li>
 </ul>
 
 Other
@@ -18,6 +19,5 @@ Other
 
 In progress
 <ul>
-	<li>Connected Components</li>
 	<li>Louvain Method</li>
 </ul>
