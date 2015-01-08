@@ -21,13 +21,16 @@ public class GraphComputer {
 	
 	public void execute(final IGraph graph, int iterations) {
 		for(int it=0; it<iterations; it++) {
+			try {
 			pool.submit( () -> {
 				graph.getNodeSet().parallelStream()
 					.forEach( node ->
 						this.vertexFunction.apply(graph, node)
 					);
-				return 0; 
-			} );
+			} ).get();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
