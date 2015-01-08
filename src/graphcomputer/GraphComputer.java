@@ -9,7 +9,7 @@ import communitydetection.VertexFunction;
 
 public class GraphComputer {
 	protected final ForkJoinPool pool;
-	protected VertexFunction vertexFunction;
+	protected VertexFunction vertexFunction = null;
 	
 	public GraphComputer() {
 		this.pool	= new ForkJoinPool(Runtime.getRuntime().availableProcessors());
@@ -19,15 +19,24 @@ public class GraphComputer {
 		this.execute(graph, 20);
 	}
 	
+	/**
+	 * Execute algorithm 
+	 * @param graph
+	 * @param iterations
+	 */
 	public void execute(final IGraph graph, int iterations) {
+		if(vertexFunction == null) {
+			throw new VertexFunctionNotFound();
+		}
+		
 		for(int it=0; it<iterations; it++) {
 			try {
-			pool.submit( () -> {
-				graph.getNodeSet().parallelStream()
-					.forEach( node ->
-						this.vertexFunction.apply(graph, node)
-					);
-			} ).get();
+				pool.submit( () -> {
+					graph.getNodeSet().parallelStream()
+						.forEach( node ->
+							this.vertexFunction.apply(graph, node)
+						);
+				} ).get();
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
