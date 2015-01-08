@@ -1,6 +1,5 @@
 package dijkstra;
 
-import exceptions.NonNegativeWeightsRequired;
 import graph.IGraph;
 import it.unimi.dsi.fastutil.ints.Int2FloatMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;

@@ -14,9 +14,9 @@ import org.junit.Test;
 
 import testing.graph.GraphFactory;
 import dijkstra.Dijkstra;
+import dijkstra.NonNegativeWeightsRequired;
 import dijkstra.Path;
 import dijkstra.Paths;
-import exceptions.NonNegativeWeightsRequired;
 
 public class DijkstraTest {
 	protected IGraph g;

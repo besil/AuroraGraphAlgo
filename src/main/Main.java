@@ -1,6 +1,7 @@
 package main;
 
 import graph.IGraph;
+import graphcomputer.GraphComputer;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 
 import java.time.Clock;
@@ -9,7 +10,7 @@ import measures.Modularity;
 import measures.WeightedModularity;
 import persistence.GraphReader;
 
-import communitydetection.PLP;
+import communitydetection.LP;
 
 import dijkstra.Dijkstra;
 
@@ -23,10 +24,47 @@ public class Main {
 		
 		System.out.println("Tot nodes: "+g.getNodeCount());
 		
-//		communityDetection(g);
-		dijkstra(g);
-		
+//		oldplp(g);
+		plp(g);
+//		dijkstra(g);
 	}
+	
+	protected static void plp(IGraph g) {
+		Clock clock = Clock.systemDefaultZone();
+		GraphComputer computer = new GraphComputer();
+
+		computer.setVertexFunction(new LP(g));
+		long start = clock.millis();
+		computer.execute(g);
+		long end = clock.millis();
+		System.out.println("PLP in "+(end - start) / 1000.0+" s");
+		computer.dismiss();
+		Int2IntMap nodeToCommunity = computer.getResult();
+
+		Modularity wm = new WeightedModularity(g, nodeToCommunity);
+		wm.execute();
+		System.out.println("Modularity: "+wm.getValue());
+	}
+	
+//	protected static void oldplp(IGraph g) {
+//		Clock clock = Clock.systemDefaultZone();
+//		long start = clock.millis();
+//		PLP plp = new PLP(g, 20);
+//		plp.execute();
+//		long end = clock.millis();
+//		System.out.println("PLP in "+(end - start) / 1000.0+" s");
+//		Int2IntMap nodeToCommunity = plp.getResult();
+//
+////		nodeToCommunity.keySet().forEach(k -> System.out.println(k+" -> "+nodeToCommunity.get(k)));
+//		
+////		Modularity m = new Modularity(g, nodeToCommunity);
+////		m.execute();
+////		System.out.println(m.getValue());
+//		
+//		Modularity wm = new WeightedModularity(g, nodeToCommunity);
+//		wm.execute();
+//		System.out.println("Modularity: "+wm.getValue());
+//	}
 	
 	protected static void dijkstra(IGraph g) {
 		Clock clock = Clock.systemDefaultZone();
@@ -47,23 +85,4 @@ public class Main {
 		System.out.println("Dijkstra in "+(end - start) / 1000.0+" s");
 	}
 	
-	protected static void communityDetection(IGraph g) {
-		Clock clock = Clock.systemDefaultZone();
-		long start = clock.millis();
-		PLP plp = new PLP(g, 20);
-		plp.execute();
-		long end = clock.millis();
-		System.out.println("PLP in "+(end - start) / 1000.0+" s");
-		Int2IntMap nodeToCommunity = plp.getResult();
-
-//		nodeToCommunity.keySet().forEach(k -> System.out.println(k+" -> "+nodeToCommunity.get(k)));
-		
-//		Modularity m = new Modularity(g, nodeToCommunity);
-//		m.execute();
-//		System.out.println(m.getValue());
-		
-		Modularity wm = new WeightedModularity(g, nodeToCommunity);
-		wm.execute();
-		System.out.println("Modularity: "+wm.getValue());
-	}
 }

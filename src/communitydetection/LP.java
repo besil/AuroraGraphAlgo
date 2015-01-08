@@ -1,50 +1,27 @@
 package communitydetection;
 
-import graph.IGraph;
 import it.unimi.dsi.fastutil.ints.Int2FloatMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntSet;
+import graph.IGraph;
 
-/**
- * 
- * @author besil
- * @deprecated Replaced with GraphComputer and Vertex Function.
- */
-@Deprecated
-public class PLP {
-	protected final IGraph g;
-	protected final int iterations;
+public class LP extends VertexFunction {
 	protected Int2IntMap result;
-	protected IntSet selectedNodes;
-
-	public PLP(IGraph g, int iterations, Int2IntMap initialPartition, IntSet forNodes) {
-		super();
-		this.g = g;
-		this.iterations = iterations;
-		this.result = initialPartition;
-		this.selectedNodes = forNodes;
+	
+	public LP(IGraph g) {
+		this.result = new Int2IntOpenHashMap();
+		g.getNodeSet().parallelStream().forEach(n -> result.put(n, n));
 	}
 	
-	public PLP(IGraph g, int iterations) {
-		this(g, iterations, new Int2IntOpenHashMap(g.getNodeCount()), g.getNodeSet() );
-		g.getNodeSet().parallelStream()
-			.forEach(n -> result.put(n, n));
+	@Override
+	public void apply(final IGraph g, int n) {
+		int newLabel = this.getNewLabel(g, n);
+		result.put(n, newLabel);
 	}
 
-	public void execute() {
-		for(int it=0; it<this.iterations; it++) {
-//			System.out.println("Iteration "+it);
-			this.selectedNodes.parallelStream()
-			.forEach(n -> {
-				int newLabel = this.getNewLabel(n);
-				result.put((int)n, newLabel);
-			});
-		}
-	}
-
-	private int getNewLabel(int n) {
+	private int getNewLabel(IGraph g, int n) {
 		if( g.degree(n) > 0 ) {
 			Int2FloatMap commMap = new Int2FloatOpenHashMap(); 
 			int neighLabel = -1, maxLabel = result.get(n);
@@ -69,7 +46,9 @@ public class PLP {
 		return n;
 	}
 
+	@Override
 	public Int2IntMap getResult() {
 		return result;
 	}
+	
 }
