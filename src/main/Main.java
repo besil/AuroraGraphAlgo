@@ -45,7 +45,7 @@ public class Main {
 
 		PageRank pr = new PageRank(g);
 		long start = clock.millis();
-		computer.execute(pr, g, 20);
+		computer.execute(pr, g, 100);
 		long end = clock.millis();
 		System.out.println("PLP in "+(end - start) / 1000.0+" s");
 		computer.dismiss();
