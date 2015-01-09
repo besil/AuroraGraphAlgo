@@ -20,4 +20,5 @@ Other
 In progress
 <ul>
 	<li>Louvain Method</li>
+	<li>Link Prediction?</li>
 </ul>
