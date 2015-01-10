@@ -24,3 +24,4 @@ In progress
 </ul>
 
 TODO
+Graph compression
